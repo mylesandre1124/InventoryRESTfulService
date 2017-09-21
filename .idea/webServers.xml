@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="090c4f46-7ce6-4449-9a4c-b59e59a82a03" name="Inventory Server" url="http://localhost:8080/Inventory/Inventory">
+        <fileTransfer port="0" accessType="LOCAL" />
+      </webServer>
+    </option>
+  </component>
+</project>
