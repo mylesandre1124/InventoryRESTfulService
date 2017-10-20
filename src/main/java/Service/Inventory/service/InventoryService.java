@@ -69,7 +69,7 @@ public class InventoryService {
         return inventory;
     }
 
-    public void removeInventory(int barcode)
+    public void removeInventory(long barcode)
     {
         try {
             getStatement().executeUpdate("DELETE FROM Inventory1 WHERE barcode = " + barcode);
@@ -78,7 +78,7 @@ public class InventoryService {
         }
     }
 
-    public Inventory updateInventory(int barcode, Inventory inventory)
+    public Inventory updateInventory(long barcode, Inventory inventory)
     {
         Inventory inventory1 = null;
         try {
