@@ -25,7 +25,7 @@ public class EmployeeService {
     {
         ArrayList<Employee> employeeArrayList = new ArrayList<>();
         try {
-            ResultSet set = getStatement().executeQuery("SELECT * FROM EMPLOYEE");
+            ResultSet set = getStatement().executeQuery("SELECT * FROM employee");
             while(set.next())
             {
                 Employee employee = new Employee();
@@ -47,7 +47,7 @@ public class EmployeeService {
     {
         Employee employee = new Employee();
         try {
-            ResultSet set = getStatement().executeQuery("SELECT * FROM EMPLOYEE WHERE empId = " + empId);
+            ResultSet set = getStatement().executeQuery("SELECT * FROM employee WHERE empId = " + empId);
             while(set.next())
             {
                 employee.setEmpId(set.getInt(1));
@@ -70,12 +70,12 @@ public class EmployeeService {
             if(!retrievedEmployee.isNull())
             {
                 getStatement().executeUpdate(
-                        "UPDATE Employee " +
+                        "UPDATE employee " +
                         "SET    password = '" + employee.getPassword() + "', " +
                                 "username = '" + employee.getUsername() + "', " +
                                 "admin = " + employee.getAdmin() + ", " +
                                 "name = '" + employee.getName() + "' " +
-                        "WHERE empId = 1124");
+                        "WHERE empId = " + employee.getEmpId());
             }
 
         } catch (SQLException e) {

@@ -1,12 +1,14 @@
 package Service.Inventory.resource;
 
 import Service.Inventory.model.Inventory;
+import Service.Inventory.model.ObjectIO;
 import Service.Inventory.service.InventoryService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyWriter;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -18,25 +20,7 @@ import java.util.TreeMap;
 @Consumes(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class InventoryResource {
 
-    TreeMap<Long, Inventory> inventoryTreeMap = new TreeMap<>();
-
-    public InventoryResource() {
-        Inventory inventory = new Inventory();
-        inventory.setCount(5);
-        inventory.setName("Macbook");
-        inventory.setBarcode(11241996);
-        inventory.setPrice(1500.00);
-        inventory.setVendor("Apple");
-        Inventory inventory1 = new Inventory();
-        inventory1.setName("Windows");
-        inventory1.setCount(3);
-        inventory1.setBarcode(5141998);
-        inventory1.setPrice(299.99);
-        inventory1.setVendor("Microsoft");
-        inventoryTreeMap.put(inventory.getBarcode(), inventory);
-        inventoryTreeMap.put(inventory1.getBarcode(), inventory1);
-    }
-    /*InventoryService inventoryService = new InventoryService();
+    InventoryService inventoryService = new InventoryService();
 
 
     @GET
@@ -44,7 +28,7 @@ public class InventoryResource {
     public Inventory getInventory(@PathParam("barcode") long barcode)
     {
         return inventoryService.getInventory(barcode);
-    }*/
+    }
 
     @GET
     public ArrayList<Inventory> getAllInventory()
@@ -62,15 +46,13 @@ public class InventoryResource {
     @Path("/{barcode}/add")
     public Inventory add(@PathParam("barcode") long barcode)
     {
-        Inventory inventory = inventoryTreeMap.get(barcode);
+        Inventory inventory = inventoryService.getInventory(barcode);
         int count = inventory.getCount();
-        System.out.println(barcode);
         inventory.setCount(++count);
-        inventoryTreeMap.put(inventory.getBarcode(), inventory);
-        return inventory;
+        return inventoryService.updateInventory(barcode, inventory);
     }
 
-    /*@DELETE
+    @DELETE
     @Path("/{barcode}")
     public void deleteInventory(@PathParam("barcode") long barcode)
     {
@@ -90,5 +72,4 @@ public class InventoryResource {
     {
         return inventoryService.createInventory(inventory);
     }
-    */
 }

@@ -31,12 +31,12 @@ public class Database {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             if(database == 0) {
-                setConnection(DriverManager.getConnection("jdbc:mysql://127.0.0.1/Inventory1?useSSL=false", "root", ""));
+                setConnection(DriverManager.getConnection("jdbc:mysql://35.192.39.38/inventory?useSSL=false", "mylesandre", "megamacman11"));
                 setStatement(getConnection().createStatement());
             }
             else if(database == 1)
             {
-                setConnection(DriverManager.getConnection("jdbc:mysql://127.0.0.1/Employee?useSSL=false", "root", ""));
+                setConnection(DriverManager.getConnection("jdbc:mysql://35.192.39.38/employee?useSSL=false", "mylesandre", "megamacman11"));
                 setStatement(getConnection().createStatement());
             }
         } catch (SQLException e) {

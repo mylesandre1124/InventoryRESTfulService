@@ -1,13 +1,14 @@
 package Service.Inventory.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Created by Myles on 2/25/17.
  */
 
 @XmlRootElement
-public class Inventory {
+public class Inventory implements Serializable {
 
     private String name;
     private int count;
@@ -87,5 +88,16 @@ public class Inventory {
         return this.inventory;
     }
 
-
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "name='" + name + '\'' +
+                ", count=" + count +
+                ", price=" + price +
+                ", vendor='" + vendor + '\'' +
+                ", barcode=" + barcode +
+                ", empId=" + empId +
+                ", inventory=" + inventory +
+                '}';
+    }
 }
