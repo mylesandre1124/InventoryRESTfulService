@@ -33,13 +33,8 @@ public class InventoryResource {
     @GET
     public ArrayList<Inventory> getAllInventory()
     {
-        //ArrayList<Inventory> inventoryArrayList = inventoryService.getAllInventory();
-        //return inventoryArrayList;
-        ArrayList<Inventory> inventories = new ArrayList<>();
-        Inventory inventory = new Inventory();
-        inventory.setName("Myles");
-        inventories.add(inventory);
-        return inventories;
+        ArrayList<Inventory> inventoryArrayList = inventoryService.getAllInventory();
+        return inventoryArrayList;
     }
 
     @GET
