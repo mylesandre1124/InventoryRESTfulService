@@ -44,6 +44,7 @@ public class InventoryResource {
         //Inventory inventory = inventoryService.getInventory(barcode);
         //int count = inventory.getCount();
         //inventory.setCount(++count);
+        System.out.println(authorization);
         if(true)
         {
             throw new ItemAlreadyScannedException("Myles", 5);

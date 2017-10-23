@@ -9,10 +9,19 @@ public class ItemAlreadyScannedException extends WebApplicationException {
     private String scannerName;
 
     public ItemAlreadyScannedException(String scannerName, int count) {
-        super(scannerName + " has already scanned this item in with a count of: " + count, Response.Status.CONFLICT);
+        super(Response.status(Response.Status.CONFLICT)
+                .entity(scannerName + " has already scanned this item in with a count of: " + count).build());
         this.scannerName = scannerName;
         this.count = count;
+
     }
 
 
+    @Override
+    public String toString() {
+        return "ItemAlreadyScannedException{" +
+                "count=" + count +
+                ", scannerName='" + scannerName + '\'' +
+                '}';
+    }
 }
