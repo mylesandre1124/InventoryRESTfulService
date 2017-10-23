@@ -1,5 +1,6 @@
 package Service.Inventory.resource;
 
+import Service.Inventory.ItemAlreadyScannedException;
 import Service.Inventory.model.Inventory;
 import Service.Inventory.model.ObjectIO;
 import Service.Inventory.service.InventoryService;
@@ -39,12 +40,16 @@ public class InventoryResource {
 
     @GET
     @Path("/{barcode}/add")
-    public Inventory add(@PathParam("barcode") long barcode)
-    {
-        Inventory inventory = inventoryService.getInventory(barcode);
-        int count = inventory.getCount();
-        inventory.setCount(++count);
-        return inventoryService.updateInventory(barcode, inventory);
+    public Inventory add(@HeaderParam("Authorization") String authorization, @PathParam("barcode") long barcode) throws Exception {
+        //Inventory inventory = inventoryService.getInventory(barcode);
+        //int count = inventory.getCount();
+        //inventory.setCount(++count);
+        if(true)
+        {
+            throw new ItemAlreadyScannedException("Myles", 5);
+        }
+        //return inventoryService.updateInventory(barcode, inventory);
+        return new Inventory();
     }
 
     @DELETE
