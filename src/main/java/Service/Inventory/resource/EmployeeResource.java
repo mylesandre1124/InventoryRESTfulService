@@ -26,7 +26,7 @@ public class EmployeeResource {
 
     @GET
     @Path("/{empId}")
-    public Employee getEmployee(@PathParam("empId") int empId)
+    public Employee getEmployee(@HeaderParam("Authorization") String header, @PathParam("empId") int empId)
     {
         return employeeService.getEmployee(empId);
     }

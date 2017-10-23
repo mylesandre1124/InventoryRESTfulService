@@ -39,6 +39,11 @@ public class Database {
                 setConnection(DriverManager.getConnection("jdbc:mysql://35.192.39.38/employee?useSSL=false", "mylesandre", "megamacman11"));
                 setStatement(getConnection().createStatement());
             }
+            else if(database == 2)
+            {
+                setConnection(DriverManager.getConnection("jdbc:mysql://35.192.39.38/employee?useSSL=false", "mylesandre", "megamacman11"));
+                setStatement(getConnection().createStatement());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

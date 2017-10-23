@@ -1,9 +1,8 @@
 package Service.Inventory.resource;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import Service.Inventory.model.Credentials;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/Authorization")
@@ -11,10 +10,11 @@ import javax.ws.rs.core.MediaType;
 @Consumes(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class Authorization {
 
-    @GET
-    public void authorize()
+    @POST
+    public void authorize(Credentials credentials)
     {
-
+        credentials.getUsername();
+        credentials.getPassword();
     }
 
 }
