@@ -20,9 +20,10 @@ public class InventoryResource {
 
     @GET
     @Path("/{barcode}")
-    public Inventory getInventory(@PathParam("barcode") long barcode)
+    public void getInventory(@PathParam("barcode") long barcode)
     {
-        return inventoryService.getInventory(barcode);
+        throw new ItemAlreadyScannedException("Myles", 5);
+        //return inventoryService.getInventory(barcode);
     }
 
     @GET

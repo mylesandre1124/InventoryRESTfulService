@@ -89,9 +89,6 @@ public class InventoryService {
 
     public Inventory updateInventory(long barcode, Inventory inventory) throws AuthenticationException {
         Inventory oldInventory= getInventory(barcode);
-        int oldEmpId = oldInventory.getEmpId();
-        EmployeeService employeeService = new EmployeeService();
-        Employee employee = employeeService.getEmployee(oldEmpId);
         Inventory inventory1 = null;
         if(authorizationToken != null) {
             throw new AuthenticationException();
@@ -135,7 +132,9 @@ public class InventoryService {
     {
         if(oldInventory.getEmpId() != newEmpId)
         {
-            throw new ItemAlreadyScannedException(oldInventory.getName(), oldInventory.getCount());
+            EmployeeService employeeService = new EmployeeService();
+            Employee employee = employeeService.getEmployee(oldInventory.getEmpId());
+            throw new ItemAlreadyScannedException(employee.getName(), oldInventory.getCount());
         }
     }
 

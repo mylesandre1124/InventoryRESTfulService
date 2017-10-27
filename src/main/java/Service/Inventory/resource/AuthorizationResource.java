@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/Authorization")
 @Produces(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Consumes(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-public class Authorization {
+public class AuthorizationResource {
 
     AuthorizationService authorizationService = new AuthorizationService();
 
