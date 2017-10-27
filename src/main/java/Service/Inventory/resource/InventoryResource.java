@@ -1,5 +1,6 @@
 package Service.Inventory.resource;
 
+import Service.Inventory.exceptions.AuthenticationException;
 import Service.Inventory.exceptions.ItemAlreadyScannedException;
 import Service.Inventory.model.Inventory;
 import Service.Inventory.service.InventoryService;
@@ -35,7 +36,7 @@ public class InventoryResource {
 
     @GET
     @Path("/{barcode}/add")
-    public Inventory add(@HeaderParam("Authorization") String authorization, @PathParam("barcode") long barcode) throws Exception {
+    public Inventory add(@HeaderParam("Authorization") String authorization, @PathParam("barcode") long barcode) throws AuthenticationException, ItemAlreadyScannedException {
         inventoryService.setAuthorizationToken(authorization);
         Inventory inventory = inventoryService.getInventory(barcode);
         int count = inventory.getCount();
