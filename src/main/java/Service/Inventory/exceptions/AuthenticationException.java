@@ -9,6 +9,6 @@ import javax.ws.rs.core.Response;
 public class AuthenticationException extends WebApplicationException {
 
     public AuthenticationException() {
-        super("Failed to get Authentication Token with credentials provided", Response.Status.UNAUTHORIZED);
+        super(Response.status(Response.Status.UNAUTHORIZED).entity("Failed to get Authentication Token with credentials provided. ").build());
     }
 }
