@@ -1,14 +1,15 @@
 package Service.Inventory.service;
 
 import Service.Inventory.database.Database;
+import Service.Inventory.exceptions.AuthenticationException;
+import Service.Inventory.exceptions.ItemAlreadyScannedException;
+import Service.Inventory.model.Employee;
 import Service.Inventory.model.Inventory;
 import Service.Inventory.model.ObjectIO;
 
 import javax.xml.crypto.Data;
 import java.io.File;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -19,10 +20,15 @@ public class InventoryService {
 
     private static Statement statement;
     private Database database;
+    private String authorizationToken;
 
     public InventoryService()  {
         database = new Database(0);
         statement = database.getStatement();
+    }
+
+    public void setAuthorizationToken(String authorizationToken) {
+        this.authorizationToken = authorizationToken;
     }
 
     public ArrayList<Inventory> getAllInventory()
@@ -81,9 +87,17 @@ public class InventoryService {
         }
     }
 
-    public Inventory updateInventory(long barcode, Inventory inventory)
-    {
+    public Inventory updateInventory(long barcode, Inventory inventory) throws AuthenticationException {
+        Inventory oldInventory= getInventory(barcode);
+        int oldEmpId = oldInventory.getEmpId();
+        EmployeeService employeeService = new EmployeeService();
+        Employee employee = employeeService.getEmployee(oldEmpId);
         Inventory inventory1 = null;
+        if(authorizationToken != null) {
+            throw new AuthenticationException();
+        }
+        inventory.setEmpId(getEmpId(authorizationToken));
+        checkIfItemAlreadyScanned(oldInventory, inventory.getEmpId());
         try {
             getStatement().executeUpdate("UPDATE inventory " +
                     "SET name = '" + inventory.getName() + "', " +
@@ -115,6 +129,39 @@ public class InventoryService {
             e.printStackTrace();
         }
         return inventory;
+    }
+
+    public void checkIfItemAlreadyScanned(Inventory oldInventory, int newEmpId)
+    {
+        if(oldInventory.getEmpId() != newEmpId)
+        {
+            throw new ItemAlreadyScannedException(oldInventory.getName(), oldInventory.getCount());
+        }
+    }
+
+    public int getEmpId(String authorizationToken) throws AuthenticationException {
+        int empId = -1;
+        if(authorizationToken == null)
+        {
+            throw new AuthenticationException();
+        }
+        try {
+            CallableStatement empIdStatement = getStatement().getConnection().prepareCall("{call login(?)}");
+            empIdStatement.setString("token", authorizationToken);
+            empIdStatement.execute();
+            ResultSet empIdSet = empIdStatement.getResultSet();
+            while (empIdSet.next()) {
+                empId = empIdSet.getInt(1);
+            }
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        if (empId == -1) {
+            throw new AuthenticationException();
+        }
+        return empId;
     }
 
     public static Statement getStatement() {

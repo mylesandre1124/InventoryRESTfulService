@@ -1,4 +1,4 @@
-package Service.Inventory;
+package Service.Inventory.exceptions;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;

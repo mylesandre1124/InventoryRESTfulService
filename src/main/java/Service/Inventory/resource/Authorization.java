@@ -1,6 +1,7 @@
 package Service.Inventory.resource;
 
 import Service.Inventory.model.Credentials;
+import Service.Inventory.service.AuthorizationService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -10,11 +11,14 @@ import javax.ws.rs.core.MediaType;
 @Consumes(value = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class Authorization {
 
+    AuthorizationService authorizationService = new AuthorizationService();
+
     @POST
-    public void authorize(Credentials credentials)
+    public String authorize(Credentials credentials)
     {
-        credentials.getUsername();
-        credentials.getPassword();
+        authorizationService.setCredentials(credentials);
+        String authenticationToken = authorizationService.getAuthenticationToken();
+        return authenticationToken;
     }
 
 }

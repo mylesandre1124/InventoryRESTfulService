@@ -1,17 +1,12 @@
 package Service.Inventory.resource;
 
-import Service.Inventory.ItemAlreadyScannedException;
+import Service.Inventory.exceptions.ItemAlreadyScannedException;
 import Service.Inventory.model.Inventory;
-import Service.Inventory.model.ObjectIO;
 import Service.Inventory.service.InventoryService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.MessageBodyWriter;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 /**
  * Created by Myles on 2/25/17.
@@ -22,7 +17,6 @@ import java.util.TreeMap;
 public class InventoryResource {
 
     InventoryService inventoryService = new InventoryService();
-
 
     @GET
     @Path("/{barcode}")
@@ -41,16 +35,11 @@ public class InventoryResource {
     @GET
     @Path("/{barcode}/add")
     public Inventory add(@HeaderParam("Authorization") String authorization, @PathParam("barcode") long barcode) throws Exception {
-        //Inventory inventory = inventoryService.getInventory(barcode);
-        //int count = inventory.getCount();
-        //inventory.setCount(++count);
-        System.out.println(authorization);
-        if(true)
-        {
-            throw new ItemAlreadyScannedException("Myles", 5);
-        }
-        //return inventoryService.updateInventory(barcode, inventory);
-        return new Inventory();
+        inventoryService.setAuthorizationToken(authorization);
+        Inventory inventory = inventoryService.getInventory(barcode);
+        int count = inventory.getCount();
+        inventory.setCount(++count);
+        return inventoryService.updateInventory(barcode, inventory);
     }
 
     @DELETE

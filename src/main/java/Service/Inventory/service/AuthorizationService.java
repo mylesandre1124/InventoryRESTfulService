@@ -1,8 +1,10 @@
 package Service.Inventory.service;
 
 import Service.Inventory.database.Database;
+import Service.Inventory.exceptions.AuthenticationException;
 import Service.Inventory.model.Credentials;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,23 +31,44 @@ public class AuthorizationService {
         return credentials;
     }
 
-    public String login()
+    public String getAuthenticationToken()
     {
+        String authorizationToken = "";
         try {
-            ResultSet set = statement.executeQuery("SELECT password from employee.employee where username = '" + getCredentials().getUsername() + "'");
-            while (set.next())
-            {
-                if(set.getString(1).equals(getCredentials().getPassword()))
-                {
-                    return "yes";
+            CallableStatement authenticate = loginToDatabase();
+            authenticate.execute();
+            ResultSet set = authenticate.getResultSet();
+            try {
+                while (set.next()) {
+                    authorizationToken = set.getString(1);
                 }
             }
+            catch (NullPointerException ex)
+            {
+                throw new AuthenticationException();
+            }
             set.close();
+            return authorizationToken;
         } catch (SQLException e) {
             e.printStackTrace();
+            return authorizationToken;
         }
-        return "no";
     }
+
+    public CallableStatement loginToDatabase()
+    {
+        CallableStatement authenticate = null;
+        try {
+            authenticate = statement.getConnection().prepareCall("{call login(?, ?)}");
+            authenticate.setString("usernameToCheck", credentials.getUsername());
+            authenticate.setString("passwordToCheck", credentials.getPassword());
+            return authenticate;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return authenticate;
+        }
+    }
+
 
     public static void main(String[] args) {
         AuthorizationService service = new AuthorizationService();
@@ -53,7 +76,7 @@ public class AuthorizationService {
         credentials.setUsername("mylesandre1124");
         credentials.setPassword("megamacman11");
         service.setCredentials(credentials);
-        System.out.println(service.login());
+        System.out.println(service.getAuthenticationToken());
     }
 
 }
