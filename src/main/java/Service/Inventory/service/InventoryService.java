@@ -90,7 +90,7 @@ public class InventoryService {
     public Inventory updateInventory(long barcode, Inventory inventory) throws AuthenticationException {
         Inventory oldInventory= getInventory(barcode);
         Inventory inventory1 = null;
-        if(authorizationToken != null) {
+        if(authorizationToken == null) {
             throw new AuthenticationException();
         }
         inventory.setEmpId(getEmpId(authorizationToken));
@@ -145,7 +145,8 @@ public class InventoryService {
             throw new AuthenticationException();
         }
         try {
-            CallableStatement empIdStatement = getStatement().getConnection().prepareCall("{call login(?)}");
+            Database database = new Database(1);
+            CallableStatement empIdStatement = database.getStatement().getConnection().prepareCall("{call getEmpId(?)}");
             empIdStatement.setString("token", authorizationToken);
             empIdStatement.execute();
             ResultSet empIdSet = empIdStatement.getResultSet();
@@ -173,10 +174,9 @@ public class InventoryService {
 
     public static void main(String[] args) {
         InventoryService inventoryService = new InventoryService();
-        Inventory inventory = inventoryService.getInventory(5141998);
-        int count = inventory.getCount();
-        inventory.setCount(++count);
-        Inventory inventory1 = inventoryService.updateInventory(5141998, inventory);
-        System.out.println(inventory1.toString());
+        int empId = inventoryService.getEmpId("02dab122bdc111e7a98742010a80054402dab139bdc111e7a98742010a80054402dab148bdc111e7a98742010a800544");
+        System.out.println(empId);
+        //Inventory inventory = inventoryService.getInventory(5141998);
+
     }
 }
