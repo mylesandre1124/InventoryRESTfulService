@@ -21,4 +21,10 @@ public class AuthorizationResource {
         return authenticationToken;
     }
 
+    @GET
+    public void checkToken(@HeaderParam("Authorization") String token)
+    {
+
+    }
+
 }

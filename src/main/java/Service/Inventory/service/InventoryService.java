@@ -21,6 +21,8 @@ public class InventoryService {
     private static Statement statement;
     private Database database;
     private String authorizationToken;
+    public int ADD = 1;
+    public int SUB = -1;
 
     public InventoryService()  {
         database = new Database(0);
@@ -163,6 +165,17 @@ public class InventoryService {
         }
         return empId;
     }
+
+    public Inventory editInventory(int change, long barcode)
+    {
+        Inventory inventory = getInventory(barcode);
+        if(change != -1 && inventory.getCount() != 0) {
+            inventory.setCount(inventory.getCount() + change);
+        }
+        return inventory;
+    }
+
+
 
     public static Statement getStatement() {
         return statement;

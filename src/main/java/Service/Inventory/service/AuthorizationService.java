@@ -69,6 +69,11 @@ public class AuthorizationService {
         }
     }
 
+    public void checkToken(String token)
+    {
+
+    }
+
 
     public static void main(String[] args) {
         AuthorizationService service = new AuthorizationService();

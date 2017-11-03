@@ -38,9 +38,15 @@ public class InventoryResource {
     @Path("/{barcode}/add")
     public Inventory add(@HeaderParam("Authorization") String authorization, @PathParam("barcode") long barcode) throws AuthenticationException, ItemAlreadyScannedException {
         inventoryService.setAuthorizationToken(authorization);
-        Inventory inventory = inventoryService.getInventory(barcode);
-        int count = inventory.getCount();
-        inventory.setCount(++count);
+        Inventory inventory = inventoryService.editInventory(inventoryService.ADD, barcode);
+        return inventoryService.updateInventory(barcode, inventory);
+    }
+
+    @GET
+    @Path("/{barcode}/sub")
+    public Inventory sub(@HeaderParam("Authorization") String authorization, @PathParam("barcode") long barcode) throws AuthenticationException, ItemAlreadyScannedException {
+        inventoryService.setAuthorizationToken(authorization);
+        Inventory inventory = inventoryService.editInventory(inventoryService.SUB, barcode);
         return inventoryService.updateInventory(barcode, inventory);
     }
 
