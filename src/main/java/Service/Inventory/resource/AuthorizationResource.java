@@ -17,14 +17,13 @@ public class AuthorizationResource {
     public String authorize(Credentials credentials)
     {
         authorizationService.setCredentials(credentials);
-        String authenticationToken = authorizationService.getAuthenticationToken();
-        return authenticationToken;
+        return authorizationService.getAuthenticationToken();
     }
 
     @GET
-    public void checkToken(@HeaderParam("Authorization") String token)
+    public Boolean checkToken(@HeaderParam("Authorization") String token)
     {
-
+        return authorizationService.checkToken(token);
     }
 
 }

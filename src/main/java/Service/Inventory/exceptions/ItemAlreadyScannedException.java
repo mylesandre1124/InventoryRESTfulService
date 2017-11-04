@@ -11,7 +11,10 @@ public class ItemAlreadyScannedException extends WebApplicationException impleme
 
     public ItemAlreadyScannedException(String scannerName, int count) {
         super(Response.status(Response.Status.CONFLICT)
-                .entity(scannerName + " has already scanned this item in with a count of: " + count + ". ").header("name", scannerName).header("count", count).build());
+                .entity(scannerName + " has already scanned this item in with a count of: " + count + ". ")
+                .header("name", scannerName)
+                .header("count", count)
+                .build());
         this.scannerName = scannerName;
         this.count = count;
 
